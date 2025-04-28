@@ -171,7 +171,7 @@ function fight(fighters) {
 const primoTurno = fight(filteredQualification);
 console.log("primo turno", primoTurno);
 
-/* inizio torneo */
+/* secondo torneo */
 
 const secondoTurno = fight(primoTurno);
 
