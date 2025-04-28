@@ -136,4 +136,20 @@ if (qualificationPassed.length % 2 != 0) {
   const robot = { name: "Robot", power: 4000 };
   qualification.push(robot);
 }
+
 console.log("giocatori qualificati", qualificationPassed);
+
+/* inizio torneo */
+const firstDraftWinners = [];
+for (let i = 0; i < qualificationPassed.length; i += 2) {
+  const firstFighter = qualificationPassed[i];
+  const secondFighter = qualificationPassed[i + 1];
+
+  if (firstFighter.totalLevel >= secondFighter.totalLevel) {
+    firstDraftWinners.push(firstFighter);
+  } else {
+    firstDraftWinners.push(secondFighter);
+  }
+}
+
+console.log(firstDraftWinners);
