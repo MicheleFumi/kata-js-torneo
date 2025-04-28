@@ -132,24 +132,53 @@ console.log("sessione allenamento", training);
 const qualificationPassed = training.filter(
   (fighter) => fighter.totalLevel >= 2000
 );
-if (qualificationPassed.length % 2 != 0) {
-  const robot = { name: "Robot", power: 4000 };
-  qualification.push(robot);
+const firstDraftWinners = [];
+
+let filteredQualification = [...qualificationPassed];
+if (qualificationPassed.length % 2 !== 0) {
+  /* const robot = { name: "Robot", power: 4000 };
+  qualificationPassed.push(robot); */
+  const fortunello = qualificationPassed[qualificationPassed.length - 1];
+  filteredQualification = filteredQualification.filter(
+    (fighter) => fighter != fortunello
+  );
 }
 
 console.log("giocatori qualificati", qualificationPassed);
 
 /* inizio torneo */
-const firstDraftWinners = [];
-for (let i = 0; i < qualificationPassed.length; i += 2) {
-  const firstFighter = qualificationPassed[i];
-  const secondFighter = qualificationPassed[i + 1];
+function fight(fighters) {
+  let nextTurn = [];
 
-  if (firstFighter.totalLevel >= secondFighter.totalLevel) {
-    firstDraftWinners.push(firstFighter);
-  } else {
-    firstDraftWinners.push(secondFighter);
+  const losers = [];
+  for (let i = 0; i < fighters.length; i += 2) {
+    const firstFighter = fighters[i];
+    const secondFighter = fighters[i + 1];
+    if (firstFighter.totalLevel >= secondFighter.totalLevel) {
+      nextTurn.push(firstFighter);
+      losers.push(secondFighter);
+    } else {
+      nextTurn.push(secondFighter);
+      losers.push(firstFighter);
+    }
   }
-}
+  if (nextTurn.length % 2 !== 0 && nextTurn.length > 1) {
+    nextTurn.push(losers[Math.floor(Math.random() * losers.length)]);
+  }
 
-console.log(firstDraftWinners);
+  return nextTurn;
+}
+const primoTurno = fight(filteredQualification);
+console.log("primo turno", primoTurno);
+
+/* inizio torneo */
+
+const secondoTurno = fight(primoTurno);
+
+console.log("secondo turno", secondoTurno);
+
+/* FINALEEE */
+
+const finale = fight(secondoTurno);
+
+console.log("finale", finale);
