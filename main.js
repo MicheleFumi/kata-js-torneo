@@ -151,6 +151,7 @@ function fight(fighters) {
   let nextTurn = [];
 
   const losers = [];
+
   for (let i = 0; i < fighters.length; i += 2) {
     const firstFighter = fighters[i];
     const secondFighter = fighters[i + 1];
@@ -168,17 +169,42 @@ function fight(fighters) {
 
   return nextTurn;
 }
+
 const primoTurno = fight(filteredQualification);
-console.log("primo turno", primoTurno);
 
-/* secondo torneo */
+function roadToFinale(array) {
+  if (array.length > 4) {
+    /* secondo turno */
+    const secondoTurno = fight(array);
+    return roadToFinale(secondoTurno);
+  } else {
+    const finalisti = [];
+    const terzoQuarto = [];
+    for (let i = 0; i < array.length; i += 2) {
+      const firstFighter = array[i];
+      const secondFighter = array[i + 1];
+      if (firstFighter.totalLevel >= secondFighter.totalLevel) {
+        finalisti.push(firstFighter);
+        terzoQuarto.push(secondFighter);
+      } else {
+        finalisti.push(secondFighter);
+        terzoQuarto.push(firstFighter);
+      }
+    }
+    if (finalisti[0] >= finalisti[1]) {
+      console.log("vincitore", finalisti[0]);
+      console.log("2. Posto", finalisti[1]);
+    } else {
+      console.log("vincitore", finalisti[1]);
+      console.log("2. Posto", finalisti[0]);
+    }
 
-const secondoTurno = fight(primoTurno);
+    if (terzoQuarto[0] >= terzoQuarto[1]) {
+      console.log("3. Posto", terzoQuarto[0]);
+    } else {
+      console.log("3. Posto", terzoQuarto[1]);
+    }
+  }
+}
 
-console.log("secondo turno", secondoTurno);
-
-/* FINALEEE */
-
-const finale = fight(secondoTurno);
-
-console.log("finale", finale);
+const finale = roadToFinale(primoTurno);
